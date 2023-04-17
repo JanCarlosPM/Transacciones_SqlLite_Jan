@@ -1,6 +1,7 @@
 package com.example.transacciones_sqllite_jan
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -43,58 +44,90 @@ class MainActivity : AppCompatActivity() {
             estudianteAdapter.setEstudiantes(estudiantes)
         })
 
-        binding.btnInsertar.setOnClickListener {
-            if (validarCampos()) {
-                val nombres = binding.etNombres.text.toString()
-                val apellidos = binding.etApellidos.text.toString()
-                val carrera = binding.etCarrera.text.toString()
-                val anio = binding.etAnio.text.toString().toIntOrNull() ?: 0
-
-                val estudiante = Estudiante(
-                    nombres = nombres, apellidos = apellidos, carrera = carrera, anio = anio
-                )
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.insertar(estudiante)
-                    limpiarCampos()
-                }
+        binding.btnLimpiar.setOnClickListener {
+            try {
+                limpiarCampos()
+            } catch (ex: Exception) {
+                Toast.makeText(
+                    this@MainActivity, "Error : ${ex.toString()}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
-        binding.btnEditar.setOnClickListener {
-            if (validarCampos()) {
-                estudianteSeleccionado?.let { estudiante ->
+        binding.btnInsertar.setOnClickListener {
+            try {
+                if (validarCampos()) {
                     val nombres = binding.etNombres.text.toString()
                     val apellidos = binding.etApellidos.text.toString()
                     val carrera = binding.etCarrera.text.toString()
                     val anio = binding.etAnio.text.toString().toIntOrNull() ?: 0
 
-                    val estudianteActualizado = Estudiante(
-                        id = estudiante.id,
-                        nombres = nombres,
-                        apellidos = apellidos,
-                        carrera = carrera,
-                        anio = anio
+                    val estudiante = Estudiante(
+                        nombres = nombres, apellidos = apellidos, carrera = carrera, anio = anio
                     )
                     CoroutineScope(Dispatchers.IO).launch {
-                        viewModel.actualizar(estudianteActualizado)
+                        viewModel.insertar(estudiante)
                         limpiarCampos()
                     }
                 }
+            } catch (ex: Exception) {
+                Toast.makeText(
+                    this@MainActivity, "Error : ${ex.toString()}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+        binding.btnEditar.setOnClickListener {
+            try {
+                if (validarCampos()) {
+                    estudianteSeleccionado?.let { estudiante ->
+                        val nombres = binding.etNombres.text.toString()
+                        val apellidos = binding.etApellidos.text.toString()
+                        val carrera = binding.etCarrera.text.toString()
+                        val anio = binding.etAnio.text.toString().toIntOrNull() ?: 0
+
+                        val estudianteActualizado = Estudiante(
+                            id = estudiante.id,
+                            nombres = nombres,
+                            apellidos = apellidos,
+                            carrera = carrera,
+                            anio = anio
+                        )
+                        limpiarCampos()
+                        CoroutineScope(Dispatchers.IO).launch {
+                            viewModel.actualizar(estudianteActualizado)
+                        }
+                    }
+                }
+            } catch (ex: Exception) {
+                Toast.makeText(
+                    this@MainActivity, "Error : ${ex.toString()}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
         binding.btnEliminar.setOnClickListener {
-            if (validarCampos()) {
-                AlertDialog.Builder(this).setTitle("Confirmación")
-                    .setMessage("¿Estás seguro de eliminar este registro?")
-                    .setPositiveButton("Sí") { _, _ ->
-                        estudianteSeleccionado?.let { estudiante ->
-                            CoroutineScope(Dispatchers.IO).launch {
-                                viewModel.eliminar(estudiante)
-                                limpiarCampos()
+            try {
+                if (validarCampos()) {
+                    AlertDialog.Builder(this).setTitle("Confirmación")
+                        .setMessage("¿Estás seguro de eliminar este registro?")
+                        .setPositiveButton("Sí") { _, _ ->
+                            estudianteSeleccionado?.let { estudiante ->
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    viewModel.eliminar(estudiante)
+                                    limpiarCampos()
+                                }
                             }
-                        }
-                    }.setNegativeButton("No", null).show()
+                        }.setNegativeButton("No", null).show()
+                }
+            } catch (ex: Exception) {
+                Toast.makeText(
+                    this@MainActivity, "Error : ${ex.toString()}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

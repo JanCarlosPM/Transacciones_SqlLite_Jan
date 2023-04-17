@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="15dp"
         tools:ignore="MissingConstraints">
 
         <EditText
@@ -56,6 +56,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Eliminar" />
+
+        <Button
+            android:id="@+id/btn_limpiar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Limpiar" />
 
     </LinearLayout>
 
