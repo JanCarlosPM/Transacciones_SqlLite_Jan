@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 if (validarCampos()) {
                     AlertDialog.Builder(this).setTitle("Confirmación")
-                        .setMessage("¿Estás seguro de eliminar este registro?")
+                        .setMessage("¿Estas seguro de eliminar este registro?")
                         .setPositiveButton("Sí") { _, _ ->
                             estudianteSeleccionado?.let { estudiante ->
                                 CoroutineScope(Dispatchers.IO).launch {
