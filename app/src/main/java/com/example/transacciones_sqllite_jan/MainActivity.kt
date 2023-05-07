@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 limpiarCampos()
             } catch (ex: Exception) {
                 Toast.makeText(
-                    this@MainActivity, "Error : ${ex.toString()}",
+                    this@MainActivity, " : ${ex.toString()}",
                     Toast.LENGTH_LONG
                 ).show()
             }
